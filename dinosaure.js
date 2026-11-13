@@ -20,6 +20,7 @@ const LEFT_GAP = 0.21;
 const JUMP_DURATION = (2 * JUMP_FORCE) / GRAVITY;   // segons
 const FRAME_DURATION = JUMP_DURATION / FRAME_COUNT;
 
+
 export class Dinosaure {
   constructor() {
     this.x = 50;
