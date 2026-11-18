@@ -39,6 +39,7 @@ function obstaclesSpawnAndDespawn (){
   const lastObstacleExists = Boolean(lastObstacle) //Comprueba si hay algun item en el array 
   const distanciaSeguridad = 250
 
+  //generacion de obstaculos
   if (Math.random() < 0.009) {
     if (!lastObstacleExists) {
       obstacles.push(new Obstacle()) //Si no existe un obstaculo, se crea uno
@@ -50,6 +51,14 @@ function obstaclesSpawnAndDespawn (){
       }
     }
   }
+
+  //Despawn de obstaculos
+  obstacles.forEach(function(obstacle, index) { //Foreach para recorrer el array de obstaculos y eliminar los que se salen del canvas
+    if (obstacle.posX < -obstacle.amplada) {
+      obstacle = null
+      obstacles.splice(index, 1)
+    }
+  })
 }
 
 function engine() {
@@ -61,13 +70,11 @@ function engine() {
   dino.draw(ctx)
   //Generacion de obstaculos
   obstaclesSpawnAndDespawn()
+  //console.log(obstacles)
 
   obstacles.forEach((obstacle, index) => {
     //console.log(obstacle.posX, obstacle.amplada, dino.isJumping)
-    if (obstacle.posX < -obstacle.amplada) {
-      obstacle = null
-      obstacles.splice(index, 1)
-    } else if (obstacle.posX > 16 && obstacle.posX < 94 && dino.isJumping == false) {
+    if (obstacle.posX > 16 && obstacle.posX < 94 && dino.isJumping == false) {
       console.log("Has chocado!")
       colision = true
       ctx.fillText("Joc acabat", 400, 100)
@@ -81,7 +88,7 @@ function engine() {
       obstacle.draw(ctx)
     }
   }) 
-  record.textContent = score.getScore()
+  record.textContent = score.getScore() 
   if (colision == false) {
     requestAnimationFrame(engine)
   }
