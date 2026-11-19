@@ -57,10 +57,19 @@ function obstaclesSpawnAndDespawn (){
     if (obstacle.posX < -obstacle.amplada) {
       obstacle = null
       obstacles.splice(index, 1)
-    }
+    } 
   })
 }
 
+//Funcion encargada de la logica de puntuacion
+function puntuaje(obstacle) {
+    obstacle.puntuat = true //Obstaculo marcado como que ha puntuado
+    puntuacio.textContent++ // +1 a la variable que almacena la puntuacion
+    score.setScore(puntuacio.textContent) //Llamada a la funcion que guarda el record en las cookies
+    console.log("+ un punto")
+}
+
+//Funcion encargada de la logica del juego
 function engine() {
   // Buidar el canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -72,17 +81,14 @@ function engine() {
   obstaclesSpawnAndDespawn()
   //console.log(obstacles)
 
-  obstacles.forEach((obstacle, index) => {
+  obstacles.forEach(function(obstacle, index) {
     //console.log(obstacle.posX, obstacle.amplada, dino.isJumping)
     if (obstacle.posX > 16 && obstacle.posX < 94 && dino.isJumping == false) {
       console.log("Has chocado!")
       colision = true
       ctx.fillText("Joc acabat", 400, 100)
-    } else if (colision == false && obstacle.posX == 15){
-      obstacle.puntuat = true
-      puntuacio.textContent++
-      score.setScore(puntuacio.textContent)
-      console.log("+ un punto")
+    } else if (colision == false && obstacle.posX == 15 && obstacle.puntuat == false){
+      puntuaje(obstacle)
       obstacle.draw(ctx)
     } else {
       obstacle.draw(ctx)
